@@ -313,18 +313,16 @@ basics.invalidSequencesIn = function (msg) {
 
 basics.sendEmptyMsgOnFail = function (node, err, msg) {
   if (node.emptyMsgOnFail) {
-    const errorMsg = node.keepMsgProperties
-      ? Object.assign({}, msg, { payload: '' })
-      : { payload: '' }
+    msg.payload = ''
 
     if (err && err.message && err.name) {
-      errorMsg.error = err
+      msg.error = err
     } else {
-      errorMsg.error = Error(err)
+      msg.error = Error(err)
     }
-    errorMsg.error.nodeStatus = node.statusText
+    msg.error.nodeStatus = node.statusText
 
-    node.send([errorMsg, errorMsg])
+    node.send([msg, msg])
   }
 }
 
